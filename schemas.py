@@ -1,11 +1,15 @@
 from pydantic import BaseModel, Field
-from typing import List
+from typing import List, Optional
 
-class CorrelationInput(BaseModel):
-    batting_scores: List[float] = Field(..., min_items=2, description="List of batting scores")
-    bowling_scores: List[float] = Field(..., min_items=2, description="List of bowling scores")
 
-class CorrelationResponse(BaseModel):
-    success: bool
-    correlation: float
-    interpretation: str
+class CorrelationRequest(BaseModel):
+    match_id: str = Field(..., min_length=1)
+    innings_id: str = Field(..., min_length=1)
+
+    x_metric_name: str
+    y_metric_name: str
+
+    x_values: List[float]
+    y_values: List[float]
+
+    ball_events: Optional[list] = []
