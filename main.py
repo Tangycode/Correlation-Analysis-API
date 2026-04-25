@@ -2,7 +2,7 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 
 from schemas import CorrelationRequest
-from services.correlation_service import (
+from correlation_service import (
     pearson_correlation,
     interpret_correlation,
     sample_risk
