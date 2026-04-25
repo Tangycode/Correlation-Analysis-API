@@ -1,41 +1,52 @@
 import math
 
-def calculate_correlation(data):
-    x = data.batting_scores
-    y = data.bowling_scores
 
+def pearson_correlation(x, y):
     n = len(x)
-
-    if n != len(y):
-        raise ValueError("Both input lists must have the same length")
 
     mean_x = sum(x) / n
     mean_y = sum(y) / n
 
     numerator = sum((x[i] - mean_x) * (y[i] - mean_y) for i in range(n))
-
-    denom_x = math.sqrt(sum((x[i] - mean_x) ** 2 for i in range(n)))
-    denom_y = math.sqrt(sum((y[i] - mean_y) ** 2 for i in range(n)))
+    denom_x = sum((x[i] - mean_x) ** 2 for i in range(n))
+    denom_y = sum((y[i] - mean_y) ** 2 for i in range(n))
 
     if denom_x == 0 or denom_y == 0:
-        raise ValueError("Correlation undefined when variance is zero")
+        raise ValueError("ZERO_VARIANCE")
 
-    correlation = numerator / (denom_x * denom_y)
+    return numerator / math.sqrt(denom_x * denom_y)
 
-    # Interpretation bands
-    if correlation >= 0.7:
-        interpretation = "Strong Positive Relationship"
-    elif correlation >= 0.3:
-        interpretation = "Moderate Positive Relationship"
-    elif correlation > -0.3:
-        interpretation = "Weak or No Relationship"
-    elif correlation > -0.7:
-        interpretation = "Moderate Negative Relationship"
+
+def interpret_correlation(r):
+    if r == 1:
+        return "positive", "perfect positive"
+    if r == -1:
+        return "negative", "perfect negative"
+
+    if r > 0:
+        direction = "positive"
+    elif r < 0:
+        direction = "negative"
     else:
-        interpretation = "Strong Negative Relationship"
+        direction = "neutral"
 
-    return {
-        "success": True,
-        "correlation": round(correlation, 2),
-        "interpretation": interpretation
-    }
+    abs_r = abs(r)
+
+    if abs_r >= 0.8:
+        strength = "strong"
+    elif abs_r >= 0.5:
+        strength = "moderate"
+    elif abs_r >= 0.2:
+        strength = "weak"
+    else:
+        strength = "very weak"
+
+    return direction, strength
+
+
+def sample_risk(n):
+    if n < 5:
+        return "high risk (very small sample)"
+    if n < 10:
+        return "moderate risk"
+    return None
