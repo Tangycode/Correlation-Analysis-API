@@ -1,0 +1,9 @@
+{
+  "match_id": "M3",
+  "innings_id": "I1",
+  "x_metric_name": "batting_score",
+  "y_metric_name": "bowling_score",
+  "x_values": [5, 5, 5, 5],
+  "y_values": [2, 4, 6, 8],
+  "ball_events": []
+}
