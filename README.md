@@ -1,17 +1,58 @@
-# Correlation Analysis API
+# Khel AI Correlation Analysis API
 
-## Version
-v1
+## Purpose
+Compute Pearson correlation between any two cricket metrics.
 
-## Base Endpoint
+---
+
+## Endpoint
 POST /api/v1/correlation-analysis
 
-## Objective
-Evaluates the relationship between batting and bowling performances using Pearson correlation.
+---
 
-## Input
-```json
-{
-  "batting_scores": [1.2, 0.8, 1.5],
-  "bowling_scores": [0.9, 0.7, 1.4]
-}
+## Input Schema
+- match_id (string)
+- innings_id (string)
+- x_metric_name (string)
+- y_metric_name (string)
+- x_values (List[float])
+- y_values (List[float])
+- ball_events (optional)
+
+---
+
+## Output Schema
+- correlation_value
+- direction
+- strength
+- interpretation
+- sample_size
+- pairs_used
+- warning
+
+---
+
+## Error Codes
+
+| Code | Meaning |
+|------|--------|
+| MISMATCH_LENGTH | arrays not equal |
+| INSUFFICIENT_DATA | < 2 values |
+| NON_NUMERIC_VALUES | invalid type |
+| ZERO_VARIANCE | constant array |
+
+---
+
+## Edge Cases Covered
+- perfect positive correlation
+- perfect negative correlation
+- zero variance detection
+- small sample warning
+
+---
+
+## Notes
+- Uses Pearson correlation only
+- Fully stateless
+- Backend-only computation
+- Strict validation enforced
