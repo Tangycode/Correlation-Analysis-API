@@ -1,18 +1,14 @@
-from fastapi import FastAPI, HTTPException
-from schemas import CorrelationInput, CorrelationResponse
-from services import calculate_correlation
-import logging
+from pydantic import BaseModel, Field
+from typing import List, Optional
 
-app = FastAPI(title="Correlation Analysis API", version="1.0")
+class CorrelationRequest(BaseModel):
+    match_id: str = Field(..., min_length=1)
+    innings_id: str = Field(..., min_length=1)
 
-logging.basicConfig(level=logging.INFO)
+    x_metric_name: str
+    y_metric_name: str
 
-@app.post("/api/v1/correlation-analysis", response_model=CorrelationResponse)
-def correlation_analysis(data: CorrelationInput):
-    try:
-        logging.info("Received correlation analysis request")
-        return calculate_correlation(data)
-    except ValueError as e:
-        raise HTTPException(status_code=400, detail=str(e))
-    except Exception:
-        raise HTTPException(status_code=500, detail="Internal Server Error")
+    x_values: List[float]
+    y_values: List[float]
+
+    ball_events: Optional[list] = []
